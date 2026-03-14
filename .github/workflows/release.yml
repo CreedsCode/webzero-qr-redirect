@@ -1,0 +1,88 @@
+# Builds the Docker image, signs it with cosign (keyless via GitHub OIDC),
+# and pushes to GitHub Container Registry.
+#
+# The signature is recorded in the Rekor public transparency log:
+#   https://rekor.sigstore.dev
+#
+# Anyone can verify the running image was built from this exact commit:
+#   cosign verify \
+#     --certificate-identity-regexp="https://github.com/CreedsCode/webzero-qr-redirect/.*" \
+#     --certificate-oidc-issuer="https://token.actions.githubusercontent.com" \
+#     ghcr.io/CreedsCode/webzero-qr-redirect:latest
+
+name: Build, Sign & Publish
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write   # required for keyless cosign signing via GitHub OIDC
+
+jobs:
+  build-sign-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=sha-
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push Docker image
+        id: build-push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Bake the git commit SHA into the image as an env var
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+
+      # Keyless signing — no private key to manage or leak.
+      # The signature is tied to this GitHub Actions run via OIDC,
+      # and recorded permanently in the Rekor transparency log.
+      - name: Sign image with cosign (keyless)
+        env:
+          DIGEST: ${{ steps.build-push.outputs.digest }}
+        run: |
+          cosign sign --yes \
+            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}"
+
+      - name: Output verification command
+        env:
+          DIGEST: ${{ steps.build-push.outputs.digest }}
+        run: |
+          echo ""
+          echo "=== Anyone can verify this image was built from commit ${{ github.sha }} ==="
+          echo ""
+          echo "cosign verify \\"
+          echo "  --certificate-identity-regexp='https://github.com/${{ github.repository }}/.*' \\"
+          echo "  --certificate-oidc-issuer='https://token.actions.githubusercontent.com' \\"
+          echo "  '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}'"
+          echo ""
