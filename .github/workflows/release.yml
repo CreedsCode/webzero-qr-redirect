@@ -18,7 +18,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: creedscode/webzero-qr-redirect
 
 permissions:
   contents: read
@@ -32,9 +32,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Lowercase image name
-        run: echo "IMAGE_NAME_LC=$(echo '${{ env.IMAGE_NAME_LC }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
@@ -50,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix=sha-
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
@@ -75,7 +72,7 @@ jobs:
           DIGEST: ${{ steps.build-push.outputs.digest }}
         run: |
           cosign sign --yes \
-            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}@${DIGEST}"
+            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}"
 
       - name: Output verification command
         env:
@@ -87,5 +84,5 @@ jobs:
           echo "cosign verify \\"
           echo "  --certificate-identity-regexp='https://github.com/${{ github.repository }}/.*' \\"
           echo "  --certificate-oidc-issuer='https://token.actions.githubusercontent.com' \\"
-          echo "  '${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}@${DIGEST}'"
+          echo "  '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}'"
           echo ""
