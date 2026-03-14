@@ -52,6 +52,7 @@ from fastapi.middleware.cors import CORSMiddleware
 DESTINATIONS: dict[str, str] = {
     # WebZero community
     "luma":         "https://luma.com/joinwebzero",
+    "intern":       "https://www.youtube.com/watch?v=iik25wqIuFo&pp=ygUbcmljayByb2xsIGJ1dCBkaWZmZXJlbnQgdXJs",
 
     # Zodl (Zcash wallet)
     "zodl-ios":     "https://apps.apple.com/us/app/zodl-zcash-wallet/id1672392439",
