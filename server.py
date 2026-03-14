@@ -158,7 +158,7 @@ def integrity() -> JSONResponse:
       cosign verify \\
         --certificate-identity-regexp="https://github.com/CreedsCode/webzero-qr-redirect/.*" \\
         --certificate-oidc-issuer="https://token.actions.githubusercontent.com" \\
-        ghcr.io/CreedsCode/webzero-qr-redirect:latest
+        ghcr.io/creedscode/webzero-qr-redirect:latest
     """
     sha256 = _SOURCE_HASH
     git_sha = os.environ.get("GIT_SHA", "unknown")
@@ -178,7 +178,7 @@ def integrity() -> JSONResponse:
             "cosign verify"
             " --certificate-identity-regexp='https://github.com/CreedsCode/webzero-qr-redirect/.*'"
             " --certificate-oidc-issuer='https://token.actions.githubusercontent.com'"
-            " ghcr.io/CreedsCode/webzero-qr-redirect:latest"
+            " ghcr.io/creedscode/webzero-qr-redirect:latest"
         ),
         "rekor_transparency_log": "https://rekor.sigstore.dev",
     })
