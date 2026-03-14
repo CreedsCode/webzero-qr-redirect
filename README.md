@@ -25,10 +25,12 @@ Anyone can verify exactly where each QR leads before scanning. Anyone can check 
 | Slug | Destination |
 |------|-------------|
 | `luma` | https://luma.com/joinwebzero |
-| `zodl-android` | Zodl (Zcash wallet) on Google Play |
-| `zodl-ios` | Zodl (Zcash wallet) on App Store |
-| `cake-android` | Cake Wallet on Google Play |
+| `zodl-ios` | Zodl on App Store |
+| `zodl-android` | Zodl on Google Play |
+| `zodl-fdroid` | Zodl on F-Droid |
 | `cake-ios` | Cake Wallet on App Store |
+| `cake-android` | Cake Wallet on Google Play |
+| `cake-apk` | Cake Wallet APK (GitHub Releases) |
 
 To add a destination for a new event: add one line to `DESTINATIONS` in `server.py`, redeploy, and run `generate_qr.py`.
 

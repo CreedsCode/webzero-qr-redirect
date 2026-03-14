@@ -35,10 +35,12 @@ except ImportError:
 # Override at runtime with --slugs to generate a subset.
 DEFAULT_SLUGS = [
     "luma",
-    "zodl-android",
     "zodl-ios",
-    "cake-android",
+    "zodl-android",
+    "zodl-fdroid",
     "cake-ios",
+    "cake-android",
+    "cake-apk",
 ]
 
 # WebZero brand colors

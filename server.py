@@ -53,11 +53,15 @@ DESTINATIONS: dict[str, str] = {
     # WebZero community
     "luma":         "https://luma.com/joinwebzero",
 
-    # Zcash wallets
-    "zodl-android": "https://play.google.com/store/apps/details?id=co.electriccoin.android",
-    "zodl-ios":     "https://apps.apple.com/app/zashi-zcash-wallet/id1672423317",
+    # Zodl (Zcash wallet)
+    "zodl-ios":     "https://apps.apple.com/us/app/zodl-zcash-wallet/id1672392439",
+    "zodl-android": "https://play.google.com/store/apps/details?id=co.electriccoin.zcash&hl=en-US&pli=1",
+    "zodl-fdroid":  "https://f-droid.org/en/packages/co.electriccoin.zcash.foss/",
+
+    # Cake Wallet
+    "cake-ios":     "https://apps.apple.com/us/app/cake-wallet/id1334702542",
     "cake-android": "https://play.google.com/store/apps/details?id=com.cakewallet.cake_wallet",
-    "cake-ios":     "https://apps.apple.com/app/cake-wallet-xmr-monero/id1334702542",
+    "cake-apk":     "https://github.com/cake-tech/cake_wallet/releases",
 }
 
 # ---------------------------------------------------------------------------
