@@ -35,6 +35,7 @@ except ImportError:
 # Override at runtime with --slugs to generate a subset.
 DEFAULT_SLUGS = [
     "luma",
+    "intern",
     "zodl-ios",
     "zodl-android",
     "zodl-fdroid",
