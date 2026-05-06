@@ -55,6 +55,7 @@ DESTINATIONS: dict[str, str] = {
     "intern":       "https://www.youtube.com/watch?v=iik25wqIuFo&pp=ygUbcmljayByb2xsIGJ1dCBkaWZmZXJlbnQgdXJs",
 
     # Zodl (Zcash wallet)
+    "zodl":         "https://zodl.com/download/",
     "zodl-ios":     "https://apps.apple.com/us/app/zodl-zcash-wallet/id1672392439",
     "zodl-android": "https://play.google.com/store/apps/details?id=co.electriccoin.zcash&hl=en-US&pli=1",
     "zodl-fdroid":  "https://f-droid.org/en/packages/co.electriccoin.zcash.foss/",
